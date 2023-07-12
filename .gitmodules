@@ -1,0 +1,3 @@
+[submodule "Plugins/SocketPlugin"]
+	path = Plugins/SocketPlugin
+	url = https://github.com/CodeSpartan/UE4TcpSocketPlugin

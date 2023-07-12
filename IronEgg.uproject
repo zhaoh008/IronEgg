@@ -25,6 +25,42 @@
 		{
 			"Name": "CommonUI",
 			"Enabled": true
+		},
+		{
+			"Name": "GameFeatures",
+			"Enabled": true
+		},
+		{
+			"Name": "GameplayAbilities",
+			"Enabled": true
+		},
+		{
+			"Name": "AsyncMixin",
+			"Enabled": true
+		},
+		{
+			"Name": "CommonLoadingScreen",
+			"Enabled": true
+		},
+		{
+			"Name": "CommonUser",
+			"Enabled": true
+		},
+		{
+			"Name": "ModularGameplayActors",
+			"Enabled": true
+		},
+		{
+			"Name": "LeeErGou",
+			"Enabled": true
+		},
+		{
+			"Name": "DataCharts",
+			"Enabled": true
+		},
+		{
+			"Name": "JWT",
+			"Enabled": true
 		}
 	]
 }

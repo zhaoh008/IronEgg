@@ -1,17 +1,17 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/GameStateBase.h"
+#include "ModularGameState.h"
 #include "SGameState.generated.h"
 
 /**
- * 
+ *
  */
 UCLASS()
-class IRONEGG_API ASGameState : public AGameStateBase
+class IRONEGG_API ASGameState : public AModularGameState
 {
 	GENERATED_BODY()
-	
+
 };

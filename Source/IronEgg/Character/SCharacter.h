@@ -1,13 +1,14 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "ModularCharacter.h"
 #include "SCharacter.generated.h"
 
 UCLASS()
-class IRONEGG_API ASCharacter : public ACharacter
+class IRONEGG_API ASCharacter : public AModularCharacter
 {
 	GENERATED_BODY()
 
@@ -19,7 +20,7 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 

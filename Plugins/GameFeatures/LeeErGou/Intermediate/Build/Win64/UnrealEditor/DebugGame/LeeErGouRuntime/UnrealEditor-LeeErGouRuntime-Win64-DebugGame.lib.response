@@ -1,0 +1,12 @@
+/NOLOGO
+/errorReport:prompt
+/MACHINE:x64
+/SUBSYSTEM:WINDOWS
+/DEF
+/NAME:"UnrealEditor-LeeErGouRuntime-Win64-DebugGame.dll"
+/IGNORE:4221
+/NODEFAULTLIB
+"D:\UEProgram\IronEgg\Intermediate\Build\Win64\IronEggEditor\DebugGame\Engine\SharedPCH.Engine.NonOptimized.ShadowErrors.h.obj"
+"D:\UEProgram\IronEgg\Plugins\GameFeatures\LeeErGou\Intermediate\Build\Win64\UnrealEditor\DebugGame\LeeErGouRuntime\LeeErGouRuntimeModule.cpp.obj"
+"D:\UEProgram\IronEgg\Plugins\GameFeatures\LeeErGou\Intermediate\Build\Win64\UnrealEditor\DebugGame\LeeErGouRuntime\Default.rc2.res"
+/OUT:"D:\UEProgram\IronEgg\Plugins\GameFeatures\LeeErGou\Intermediate\Build\Win64\UnrealEditor\DebugGame\LeeErGouRuntime\UnrealEditor-LeeErGouRuntime-Win64-DebugGame.lib"

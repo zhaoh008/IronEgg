@@ -1,0 +1,7 @@
+﻿#pragma once
+#include "Logging/LogMacros.h"
+
+IRONEGG_API DECLARE_LOG_CATEGORY_EXTERN(LogEgg, Log, All);
+IRONEGG_API DECLARE_LOG_CATEGORY_EXTERN(LogEggExperience, Log, All);
+IRONEGG_API DECLARE_LOG_CATEGORY_EXTERN(LogEggAbilitySystem, Log, All);
+IRONEGG_API DECLARE_LOG_CATEGORY_EXTERN(LogEggTeams, Log, All);
