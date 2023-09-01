@@ -8,7 +8,7 @@ public class IronEgg : ModuleRules
     {
         PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
-        PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "ModularGameplayActors", "GameplayTags" });
+        PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput", "ModularGameplayActors", "GameplayTags" });
 
         PrivateDependencyModuleNames.AddRange(new string[] { });
 

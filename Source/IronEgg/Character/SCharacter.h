@@ -5,26 +5,57 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "ModularCharacter.h"
+#include "InputMappingContext.h"
 #include "SCharacter.generated.h"
 
+class UCameraComponent;
+class USpringArmComponent;
+class USInputConfig;
 UCLASS()
 class IRONEGG_API ASCharacter : public AModularCharacter
 {
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this character's properties
+
 	ASCharacter();
 
 protected:
-	// Called when the game starts or when spawned
+
 	virtual void BeginPlay() override;
 
+
+
+
+
+	UPROPERTY(VisibleAnywhere)
+		USpringArmComponent* SpringArmComp;
+
+	UPROPERTY(VisibleAnywhere)
+		UCameraComponent* CameraComp;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+		UInputMappingContext* DefaultInputMapping;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+		USInputConfig* SInputConfig;
+
+	void Input_Move(const FInputActionValue& InputActionValue);
+	void Input_LookMouse(const FInputActionValue& InputActionValue);
+	void Input_LookStick(const FInputActionValue& InputActionValue);
+	void Input_Crouch(const FInputActionValue& InputActionValue);
+	void Input_AutoRun(const FInputActionValue& InputActionValue);
+
 public:
-	// Called every frame
+
 	virtual void Tick(float DeltaTime) override;
 
-	// Called to bind functionality to input
+
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+
+
+
+
 
 };
