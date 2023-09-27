@@ -68,7 +68,7 @@ void ASCharacter::Input_LookMouse(const FInputActionValue& InputActionValue)
 
 	AddControllerYawInput(Value.X);
 
-	AddControllerPitchInput(Value.X);
+	AddControllerPitchInput(Value.Y * -1);
 
 }
 
