@@ -10,7 +10,7 @@ public class IronEgg : ModuleRules
 
         PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput", "ModularGameplayActors", "GameplayTags", "UMG", "Slate" });
 
-        PrivateDependencyModuleNames.AddRange(new string[] { "CommonUI","Slate","SlateCore","CommonInput", "CommonGame", "CommonLoadingScreen" });
+        PrivateDependencyModuleNames.AddRange(new string[] { "CommonUI","Slate","SlateCore","CommonInput", "CommonGame", "CommonLoadingScreen", "GameSettings" });
 
         // Uncomment if you are using Slate UI
         // PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });
