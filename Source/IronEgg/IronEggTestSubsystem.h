@@ -27,56 +27,7 @@ public:
 	//测试线程函数
 	UFUNCTION(BlueprintCallable, Category = "JustForFun")
 		void TestThreadFunc();
+
+	
 };
 
-
-//线程类A
-class FMyThreadA : public FRunnable
-{
-
-
-
-public:
-
-	//构造
-	FMyThreadA(FEvent* InEvent) : MyEvent(InEvent) {}
-	//析构
-	~FMyThreadA() {
-
-	}
-
-	bool Init() override;
-
-
-	uint32 Run() override;
-
-
-	void Stop() override;
-
-
-	void Exit() override;
-
-private:
-
-	FEvent* MyEvent;
-
-};
-//线程类B
-class FMyThreadB : public FRunnable
-{
-public:
-	bool Init() override;
-
-
-	uint32 Run() override;
-
-
-	void Stop() override;
-
-
-	void Exit() override;
-
-private:
-	FEvent* MyEvent;
-
-};

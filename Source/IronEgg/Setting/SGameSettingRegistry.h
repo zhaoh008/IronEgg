@@ -54,6 +54,8 @@ protected:
 
 	UGameSettingCollection*  InitializeGameplaySettings(USLocalPlayer* InLocalPlayer);
 
+	UGameSettingCollection* InitializeMyGameSettingCollection(USLocalPlayer * InLocalPlayer);
+
 private:
 	UPROPERTY()
 	TObjectPtr<UGameSettingCollection> VideoSettings;
@@ -69,4 +71,7 @@ private:
 
 	UPROPERTY()
 	TObjectPtr<UGameSettingCollection> GamepadSettings;
+
+	UPROPERTY()
+	TObjectPtr<UGameSettingCollection> MyGameSetting;
 };

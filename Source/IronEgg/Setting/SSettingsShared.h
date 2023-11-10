@@ -9,7 +9,7 @@
 
 class USLocalPlayer;
 /**
- * 
+ *
  */
 UCLASS()
 class IRONEGG_API USSettingsShared : public USaveGame
@@ -17,19 +17,19 @@ class IRONEGG_API USSettingsShared : public USaveGame
 	GENERATED_BODY()
 
 public:
-	USSettingsShared(){};
+	USSettingsShared();
 	void Initialize(USLocalPlayer* LocalPlayer);
 	bool IsDirty() const { return bIsDirty; }
 	void ClearDirtyFlag() { bIsDirty = false; }
-	
+
 	void SaveSettings();
 	void ApplySettings();
 	static USSettingsShared* LoadOrCreateSettings(const USLocalPlayer* LocalPlayer);
-	
+
 
 private:
 	UPROPERTY(Transient)
-	TObjectPtr<USLocalPlayer> OwningPlayer = nullptr;
+		TObjectPtr<USLocalPlayer> OwningPlayer = nullptr;
 
 	bool bIsDirty = false;
 	////////////////////////////////////////////////////////
@@ -51,20 +51,49 @@ public:
 
 	void ResetToDefaultCulture();
 	bool ShouldResetToDefaultCulture() const { return bResetToDefaultCulture; }
-	
+
 	void ApplyCultureSettings();
 	void ResetCultureToCurrentSettings();
+
+
+
 
 private:
 	/** The pending culture to apply */
 	UPROPERTY(Transient)
-	FString PendingCulture;
+		FString PendingCulture;
 
 	/* If true, resets the culture to default. */
 	bool bResetToDefaultCulture = false;
 
 	////////////////////////////////////////////////////////
 	// Gamepad Sensitivity
-	
+
+
+	/////我的游戏设置
+
+public:
+
+	 TArray<FString> GetSomeNameList() const;
+
+	void SetCurrentName(const FString& InName);
+
+	FString GetCurrentName()const {
+		return CurrentName;
+	};
+
+	void ApplyMyGameSetting();
+
+
+	void ClearCurrentName();
+
+	int32 FindCurrentNameIndex() const;
+
+private:
+
+
+	TArray<FString> SomeNames;
+
+	FString CurrentName;
 };
 

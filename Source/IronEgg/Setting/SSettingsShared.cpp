@@ -10,10 +10,18 @@
 
 static FString SHARED_SETTINGS_SLOT_NAME = TEXT("SharedGameSettings");
 
+USSettingsShared::USSettingsShared()
+{
+	FInternationalization::Get().OnCultureChanged().AddUObject(this, &ThisClass::OnCultureChanged);
+}
+
 void USSettingsShared::Initialize(USLocalPlayer* LocalPlayer)
 {
 	check(LocalPlayer);
-	OwningPlayer=LocalPlayer;
+	OwningPlayer = LocalPlayer;
+	SomeNames.Add(TEXT("选项1"));
+	SomeNames.Add(TEXT("选项2"));
+	SomeNames.Add(TEXT("选项3"));
 }
 
 void USSettingsShared::SaveSettings()
@@ -25,6 +33,7 @@ void USSettingsShared::SaveSettings()
 void USSettingsShared::ApplySettings()
 {
 	ApplyCultureSettings();
+	ApplyMyGameSetting();
 }
 
 USSettingsShared* USSettingsShared::LoadOrCreateSettings(const USLocalPlayer* LocalPlayer)
@@ -37,7 +46,7 @@ USSettingsShared* USSettingsShared::LoadOrCreateSettings(const USLocalPlayer* Lo
 		USaveGame* Slot = UGameplayStatics::LoadGameFromSlot(SHARED_SETTINGS_SLOT_NAME, LocalPlayer->GetLocalPlayerIndex());
 		SharedSettings = Cast<USSettingsShared>(Slot);
 	}
-	
+
 	if (SharedSettings == nullptr)
 	{
 		SharedSettings = Cast<USSettingsShared>(UGameplayStatics::CreateSaveGameObject(USSettingsShared::StaticClass()));
@@ -122,3 +131,32 @@ void USSettingsShared::ResetCultureToCurrentSettings()
 	ClearPendingCulture();
 	bResetToDefaultCulture = false;
 }
+
+ TArray<FString> USSettingsShared::GetSomeNameList() const
+{
+	return SomeNames;
+}
+
+void USSettingsShared::SetCurrentName(const FString& InName)
+{
+	CurrentName = InName;
+}
+
+void USSettingsShared::ApplyMyGameSetting()
+{
+
+}
+void USSettingsShared::ClearCurrentName()
+{
+	CurrentName.Reset();
+}
+
+int32 USSettingsShared::FindCurrentNameIndex() const
+{
+	const int32 Index=SomeNames.IndexOfByKey(CurrentName);
+	if (Index!=INDEX_NONE)
+	{
+		return Index;
+	}
+	return 0;
+};

@@ -1,0 +1,14 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "d:\\ueprogram\\ironegg\\plugins\\gamefeatures\\leeergou\\source\\leeergouruntime\\private\\leeergouruntimemodule.cpp",
+        "ProvidedModule": "",
+        "PCH": "d:\\ueprogram\\ironegg\\intermediate\\build\\win64\\ironegg\\development\\engine\\sharedpch.engine.shadowerrors.h.pch",
+        "Includes": [
+            "d:\\ueprogram\\ironegg\\plugins\\gamefeatures\\leeergou\\intermediate\\build\\win64\\unrealgame\\development\\leeergouruntime\\definitions.leeergouruntime.h",
+            "d:\\ueprogram\\ironegg\\plugins\\gamefeatures\\leeergou\\source\\leeergouruntime\\public\\leeergouruntimemodule.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

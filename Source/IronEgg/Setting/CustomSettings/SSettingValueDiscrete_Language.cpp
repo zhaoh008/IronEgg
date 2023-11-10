@@ -8,6 +8,8 @@
 #include "Internationalization/Culture.h"
 #include "Internationalization/CulturePointer.h"
 #include "Internationalization/Internationalization.h"
+#include "Messaging/CommonMessagingSubsystem.h"
+#include "Messaging/CommonGameDialog.h"
 
 #define LOCTEXT_NAMESPACE "IronEgg"
 
@@ -18,11 +20,7 @@ USSettingValueDiscrete_Language::USSettingValueDiscrete_Language()
 
 void USSettingValueDiscrete_Language::StoreInitial()
 {
-	if (USSettingsShared* Settings = CastChecked<USLocalPlayer>(LocalPlayer)->GetSharedSettings())
-	{
-		Settings->ClearPendingCulture();
-		NotifySettingChanged(EGameSettingChangeReason::RestoreToInitial);
-	}
+
 }
 
 void USSettingValueDiscrete_Language::ResetToDefault()
@@ -41,6 +39,7 @@ void USSettingValueDiscrete_Language::RestoreToInitial()
 
 void USSettingValueDiscrete_Language::SetDiscreteOptionByIndex(int32 Index)
 {
+	UE_LOG(LogTemp, Log, TEXT("set %d"), Index);
 	if (USSettingsShared* Settings = CastChecked<USLocalPlayer>(LocalPlayer)->GetSharedSettings())
 	{
 		if (Index == SettingSystemDefaultLanguageIndex)
@@ -51,17 +50,19 @@ void USSettingValueDiscrete_Language::SetDiscreteOptionByIndex(int32 Index)
 		{
 			Settings->SetPendingCulture(AvailableCultureNames[Index]);
 		}
-		
+
 		NotifySettingChanged(EGameSettingChangeReason::Change);
 	}
 }
 
 int32 USSettingValueDiscrete_Language::GetDiscreteOptionIndex() const
 {
+
 	if (const USSettingsShared* Settings = CastChecked<USLocalPlayer>(LocalPlayer)->GetSharedSettings())
 	{
 		if (Settings->ShouldResetToDefaultCulture())
 		{
+			UE_LOG(LogTemp, Log, TEXT("get  ShouldResetToDefaultCulture %d"), SettingSystemDefaultLanguageIndex);
 			return SettingSystemDefaultLanguageIndex;
 		}
 
@@ -77,12 +78,13 @@ int32 USSettingValueDiscrete_Language::GetDiscreteOptionIndex() const
 
 			PendingCulture = FInternationalization::Get().GetCurrentCulture()->GetName();
 		}
-
+		UE_LOG(LogTemp, Log, TEXT("get PendingCulture %s"), *PendingCulture);
 		// Try to find an exact match 
 		{
 			const int32 ExactMatchIndex = AvailableCultureNames.IndexOfByKey(PendingCulture);
 			if (ExactMatchIndex != INDEX_NONE)
 			{
+				UE_LOG(LogTemp, Log, TEXT("get ExactMatchIndex %d"), ExactMatchIndex);
 				return ExactMatchIndex;
 			}
 		}
@@ -93,6 +95,7 @@ int32 USSettingValueDiscrete_Language::GetDiscreteOptionIndex() const
 		{
 			if (PrioritizedPendingCultures.Contains(AvailableCultureNames[i]))
 			{
+				UE_LOG(LogTemp, Log, TEXT("get PrioritizedPendingCultures %d"), i);
 				return i;
 			}
 		}
@@ -142,7 +145,6 @@ TArray<FText> USSettingValueDiscrete_Language::GetDiscreteOptions() const
 void USSettingValueDiscrete_Language::OnInitialized()
 {
 	Super::OnInitialized();
-	Super::OnInitialized();
 
 	const TArray<FString> AllCultureNames = FTextLocalizationManager::Get().GetLocalizedCultureNames(ELocalizationLoadFlags::Game);
 	for (const FString& CultureName : AllCultureNames)
@@ -158,6 +160,14 @@ void USSettingValueDiscrete_Language::OnInitialized()
 
 void USSettingValueDiscrete_Language::OnApply()
 {
-	Super::OnApply();
+	if (UCommonMessagingSubsystem* Messaging = LocalPlayer->GetSubsystem<UCommonMessagingSubsystem>())
+	{
+		Messaging->ShowConfirmation(
+			UCommonGameDialogDescriptor::CreateConfirmationOk(
+				LOCTEXT("WarningLanguage_Title", "Language Changed"),
+				LOCTEXT("WarningLanguage_Message", "You will need to restart the game completely for all language related changes to take effect.")
+			)
+		);
+	}
 }
 #undef LOCTEXT_NAMESPACE

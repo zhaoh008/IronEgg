@@ -40,6 +40,9 @@ void USGameSettingRegistry::OnInitialize(ULocalPlayer* InLocalPlayer)
 
 	GameplaySettings = InitializeGameplaySettings(LocalPlayer);
 	RegisterSetting(GameplaySettings);
+	
+	MyGameSetting=InitializeMyGameSettingCollection(LocalPlayer);
+	RegisterSetting(MyGameSetting);
 
 }
 

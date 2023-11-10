@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -6,15 +6,16 @@
 #include "CommonLocalPlayer.h"
 #include "SLocalPlayer.generated.h"
 
+class USSettingsShared;
 /**
- * 
+ *
  */
 UCLASS()
 class IRONEGG_API USLocalPlayer : public UCommonLocalPlayer
 {
 	GENERATED_BODY()
 public:
-	USLocalPlayer(){}
+	USLocalPlayer() {}
 
 	//~UObject interface
 	virtual void PostInitProperties() override;
@@ -30,11 +31,13 @@ public:
 	//~End of ULocalPlayer interface
 
 	UFUNCTION()
-	USSettingsLocal* GetLocalSettings() const;
+		USSettingsLocal* GetLocalSettings() const;
 
 	UFUNCTION()
-	USSettingsShared* GetSharedSettings() const;
+		USSettingsShared* GetSharedSettings() const;
 
+private:
+	UPROPERTY(Transient)
+		mutable TObjectPtr<USSettingsShared> SharedSettings;
 
-	
 };

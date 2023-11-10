@@ -33,5 +33,10 @@ USSettingsLocal* USLocalPlayer::GetLocalSettings() const
 
 USSettingsShared* USLocalPlayer::GetSharedSettings() const
 {
-	return USSettingsShared::LoadOrCreateSettings(this);
+	if (!SharedSettings)
+	{
+		SharedSettings = USSettingsShared::LoadOrCreateSettings(this);
+	}
+
+	return SharedSettings;
 }

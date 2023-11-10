@@ -1,11 +1,8 @@
 #include "SGameSettingRegistry.h"
-
 #include "GameSetting.h"
-#include "GameSettingValueDiscreteDynamic.h"
 #include "GameSettingValueScalar.h"
 #include "GameSettingValueScalarDynamic.h"
 #include "GameSettingCollection.h"
-#include "GameSettingAction.h"
 #include "EditCondition/WhenPlayingAsPrimaryPlayer.h"
 #include "IronEgg/Setting/CustomSettings/SSettingValueDiscrete_Language.h"
 #include "IronEgg/Player/SLocalPlayer.h"
@@ -49,5 +46,7 @@ UGameSettingCollection* USGameSettingRegistry::InitializeGameplaySettings(USLoca
 
 	return Screen;
 }
+
+
 
 #undef LOCTEXT_NAMESPACE
