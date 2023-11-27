@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameSettingRegistry.h"
 #include "IronEgg/Player/SLocalPlayer.h"
-#include "UObject/Object.h"
+#include "DataSource/GameSettingDataSourceDynamic.h"
 #include "SGameSettingRegistry.generated.h"
 
 class ULocalPlayer;
@@ -52,9 +52,13 @@ protected:
 
 	UGameSettingCollection* InitializeAudioSettings(USLocalPlayer* InLocalPlayer);
 
+	UGameSettingCollection* InitializeVideoSettings(USLocalPlayer* InLocalPlayer);
+	
 	UGameSettingCollection*  InitializeGameplaySettings(USLocalPlayer* InLocalPlayer);
 
 	UGameSettingCollection* InitializeMyGameSettingCollection(USLocalPlayer * InLocalPlayer);
+
+	
 
 private:
 	UPROPERTY()

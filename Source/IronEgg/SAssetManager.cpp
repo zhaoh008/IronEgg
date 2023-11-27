@@ -27,4 +27,6 @@ void USAssetManager::StartInitialLoading()
 {
 	Super::StartInitialLoading();
 	SGameplayTags::InitializeNativeTags();
+
+	
 }

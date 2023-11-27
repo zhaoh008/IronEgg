@@ -8,6 +8,16 @@
 #include "SSettingsShared.generated.h"
 
 class USLocalPlayer;
+
+
+UENUM(BlueprintType)
+enum class ELyraAllowBackgroundAudioSetting : uint8
+{
+	Off,
+	AllSounds,
+
+	Num UMETA(Hidden),
+};
 /**
  *
  */
@@ -15,9 +25,13 @@ UCLASS()
 class IRONEGG_API USSettingsShared : public USaveGame
 {
 	GENERATED_BODY()
-
+	
 public:
 	USSettingsShared();
+	
+	DECLARE_EVENT_OneParam(USSettingsShared, FOnSettingChangedEvent, USSettingsShared* Settings);
+	FOnSettingChangedEvent OnSettingChanged;
+	
 	void Initialize(USLocalPlayer* LocalPlayer);
 	bool IsDirty() const { return bIsDirty; }
 	void ClearDirtyFlag() { bIsDirty = false; }
@@ -26,6 +40,24 @@ public:
 	void ApplySettings();
 	static USSettingsShared* LoadOrCreateSettings(const USLocalPlayer* LocalPlayer);
 
+	
+	////////////////////////////////////////////////////////
+	/// Dirty and Change Reporting
+private:
+	template<typename T>
+	bool ChangeValueAndDirty(T& CurrentValue, const T& NewValue)
+	{
+		if (CurrentValue != NewValue)
+		{
+			CurrentValue = NewValue;
+			bIsDirty = true;
+			OnSettingChanged.Broadcast(this);
+			
+			return true;
+		}
+
+		return false;
+	}
 
 private:
 	UPROPERTY(Transient)
@@ -74,7 +106,7 @@ private:
 
 public:
 
-	 TArray<FString> GetSomeNameList() const;
+	TArray<FString> GetSomeNameList() const;
 
 	void SetCurrentName(const FString& InName);
 
@@ -94,6 +126,21 @@ private:
 
 	TArray<FString> SomeNames;
 
-	FString CurrentName;
+	UPROPERTY()
+		FString CurrentName;
+
+	////////////////////////////////////////////////////////
+	// Shared audio settings
+	public:
+	UFUNCTION()
+	ELyraAllowBackgroundAudioSetting GetAllowAudioInBackgroundSetting() const { return AllowAudioInBackground; }
+	UFUNCTION()
+	void SetAllowAudioInBackgroundSetting(ELyraAllowBackgroundAudioSetting NewValue);
+
+	void ApplyBackgroundAudioSettings();
+
+private:
+	UPROPERTY()
+	ELyraAllowBackgroundAudioSetting AllowAudioInBackground = ELyraAllowBackgroundAudioSetting::Off;
 };
 

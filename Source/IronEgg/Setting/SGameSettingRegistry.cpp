@@ -13,7 +13,7 @@ USGameSettingRegistry* USGameSettingRegistry::Get(USLocalPlayer* LocalPlayer)
 	if (Registry == nullptr)
 	{
 		Registry = NewObject<USGameSettingRegistry>(LocalPlayer, TEXT("SGameSettingRegistry"));
-		Registry -> Initialize(LocalPlayer);
+		Registry->Initialize(LocalPlayer);
 	}
 
 	return Registry;
@@ -22,13 +22,12 @@ USGameSettingRegistry* USGameSettingRegistry::Get(USLocalPlayer* LocalPlayer)
 void USGameSettingRegistry::SaveChanges()
 {
 	Super::SaveChanges();
-	Super::SaveChanges();
-	
+
 	if (USLocalPlayer* LocalPlayer = Cast<USLocalPlayer>(OwningLocalPlayer))
 	{
 		// Game user settings need to be applied to handle things like resolution, this saves indirectly
 		LocalPlayer->GetLocalSettings()->ApplySettings(false);
-		
+
 		LocalPlayer->GetSharedSettings()->ApplySettings();
 		LocalPlayer->GetSharedSettings()->SaveSettings();
 	}
@@ -40,10 +39,16 @@ void USGameSettingRegistry::OnInitialize(ULocalPlayer* InLocalPlayer)
 
 	GameplaySettings = InitializeGameplaySettings(LocalPlayer);
 	RegisterSetting(GameplaySettings);
-	
-	MyGameSetting=InitializeMyGameSettingCollection(LocalPlayer);
+
+	MyGameSetting = InitializeMyGameSettingCollection(LocalPlayer);
 	RegisterSetting(MyGameSetting);
 
+	AudioSettings = InitializeAudioSettings(LocalPlayer);
+	RegisterSetting(AudioSettings);
+
+
+	VideoSettings = InitializeVideoSettings(LocalPlayer);
+	RegisterSetting(VideoSettings);
 }
 
 bool USGameSettingRegistry::IsFinishedInitializing() const
@@ -61,4 +66,6 @@ bool USGameSettingRegistry::IsFinishedInitializing() const
 	}
 	return false;
 }
+
+
 

@@ -8,9 +8,34 @@ public class IronEgg : ModuleRules
     {
         PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
-        PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput", "ModularGameplayActors", "GameplayTags", "UMG", "Slate" });
+        PublicDependencyModuleNames.AddRange(new string[] {
+            "Core", 
+            "CoreUObject", 
+            "Engine",
+            "InputCore",
+            "EnhancedInput",
+            "ModularGameplayActors",
+            "GameplayTags",
+            "UMG", 
+            "Slate" 
+        });
 
-        PrivateDependencyModuleNames.AddRange(new string[] { "CommonUI", "Slate", "SlateCore", "CommonInput", "CommonGame", "CommonLoadingScreen", "GameSettings" });
+        PrivateDependencyModuleNames.AddRange(new string[] { 
+            "CommonUI", 
+            "Slate", 
+            "SlateCore", 
+            "NetCore",
+            "RHI",
+            "Projects",
+            "CommonInput", 
+            "CommonGame", 
+            "CommonLoadingScreen",
+            "GameSettings",
+            "AudioModulation",
+            "AudioMixer",
+            "DeveloperSettings",
+            "GameSettings"
+        });
 
         // Uncomment if you are using Slate UI
         // PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });

@@ -34,6 +34,7 @@ void USSettingsShared::ApplySettings()
 {
 	ApplyCultureSettings();
 	ApplyMyGameSetting();
+	ApplyBackgroundAudioSettings();
 }
 
 USSettingsShared* USSettingsShared::LoadOrCreateSettings(const USLocalPlayer* LocalPlayer)
@@ -132,7 +133,7 @@ void USSettingsShared::ResetCultureToCurrentSettings()
 	bResetToDefaultCulture = false;
 }
 
- TArray<FString> USSettingsShared::GetSomeNameList() const
+TArray<FString> USSettingsShared::GetSomeNameList() const
 {
 	return SomeNames;
 }
@@ -153,10 +154,26 @@ void USSettingsShared::ClearCurrentName()
 
 int32 USSettingsShared::FindCurrentNameIndex() const
 {
-	const int32 Index=SomeNames.IndexOfByKey(CurrentName);
-	if (Index!=INDEX_NONE)
+	const int32 Index = SomeNames.IndexOfByKey(CurrentName);
+	if (Index != INDEX_NONE)
 	{
 		return Index;
 	}
 	return 0;
+}
+
+void USSettingsShared::SetAllowAudioInBackgroundSetting(ELyraAllowBackgroundAudioSetting NewValue)
+{
+	if (ChangeValueAndDirty(AllowAudioInBackground, NewValue))
+	{
+		ApplyBackgroundAudioSettings();
+	}
+}
+
+void USSettingsShared::ApplyBackgroundAudioSettings()
+{
+	if (OwningPlayer && OwningPlayer->IsPrimaryPlayer())
+	{
+		FApp::SetUnfocusedVolumeMultiplier((AllowAudioInBackground != ELyraAllowBackgroundAudioSetting::Off) ? 1.0f : 0.0f);
+	}
 };
