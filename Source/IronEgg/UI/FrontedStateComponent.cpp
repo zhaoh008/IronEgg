@@ -5,6 +5,7 @@
 #include "CommonActivatableWidget.h"
 #include "NativeGameplayTags.h"
 #include "PrimaryGameLayout.h"
+#include "IronEgg/GameModes/SGameState.h"
 
 namespace FrontendTags
 {
@@ -43,7 +44,7 @@ bool UFrontedStateComponent::ShouldShowLoadingScreen(FString& OutReason) const
 void UFrontedStateComponent::BeginPlay()
 {
 	Super::BeginPlay();
-	ShowUILayout();
+	GetWorldTimerManager().SetTimer(TimerHandle_OnTimer,this,&ThisClass::ShowUILayout,0.2,false);
 }
 
 void UFrontedStateComponent::ShowUILayout()
@@ -65,4 +66,5 @@ void UFrontedStateComponent::ShowUILayout()
 			bShouldShowLoadingScreen = false;
 		});
 	}
+	GetWorldTimerManager().ClearTimer(TimerHandle_OnTimer);
 }

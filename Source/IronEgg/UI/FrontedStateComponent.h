@@ -11,7 +11,7 @@ class UCommonActivatableWidget;
 /**
  *
  */
-UCLASS(Abstract)
+UCLASS()
 class IRONEGG_API UFrontedStateComponent : public UGameStateComponent, public ILoadingProcessInterface
 {
 	GENERATED_BODY()
@@ -28,21 +28,19 @@ public:
 
 	virtual  bool ShouldShowLoadingScreen(FString& OutReason) const override;
 
-
+	void ShowUILayout();
 
 
 	virtual  void BeginPlay()  override;
 
 private:
-
-	void ShowUILayout();
-
-
-
+	
 	UPROPERTY(EditAnywhere, Category = UI)
 		TSoftClassPtr<UCommonActivatableWidget> MainScreenClass;
 
 	UPROPERTY(EditAnywhere, Category = UI)
 		TSoftClassPtr<UCommonActivatableWidget> HUDLayoutClass;
 	bool bShouldShowLoadingScreen;
+
+	FTimerHandle TimerHandle_OnTimer;
 };

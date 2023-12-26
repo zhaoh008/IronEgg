@@ -3,9 +3,19 @@
 #pragma once
 
 #include "CoreMinimal.h"
+
+#include "CommonInputBaseTypes.h"
+#include "Containers/Array.h"
+#include "Containers/Map.h"
+#include "Containers/UnrealString.h"
+#include "Delegates/Delegate.h"
 #include "GameFramework/GameUserSettings.h"
-#include "UObject/Object.h"
+#include "InputCoreTypes.h"
+#include "Scalability.h"
+#include "UObject/NameTypes.h"
+#include "UObject/UObjectGlobals.h"
 #include "SSettingsLocal.generated.h"
+
 
 class USLocalPlayer;
 class UObject;
@@ -14,6 +24,17 @@ class USoundControlBus;
 class USoundControlBusMix;
 struct FFrame;
 
+USTRUCT()
+struct FLyraScalabilitySnapshot
+{
+	GENERATED_BODY()
+
+	FLyraScalabilitySnapshot();
+
+	Scalability::FQualityLevels Qualities;
+	bool bActive = false;
+	bool bHasOverrides = false;
+};
 /**
  * 
  */
@@ -41,6 +62,58 @@ public:
 	virtual int32 GetOverallScalabilityLevel() const override;
 	virtual void SetOverallScalabilityLevel(int32 Value) override;
 	//~End of UGameUserSettings interface
+
+	//////////////////////////////////////////////////////////////////
+	// Display - Mobile quality settings
+public:
+	
+	static int32 GetDefaultMobileFrameRate();
+	static int32 GetMaxMobileFrameRate();
+
+	static bool IsSupportedMobileFramePace(int32 TestFPS);
+
+	// Returns the first frame rate at which overall quality is restricted/limited by the current device profile
+	int32 GetFirstFrameRateWithQualityLimit() const;
+
+	// Returns the lowest quality at which there's a limit on the overall frame rate (or -1 if there is no limit)
+	int32 GetLowestQualityWithFrameRateLimit() const;
+
+	void ResetToMobileDeviceDefaults();
+
+	int32 GetMaxSupportedOverallQualityLevel() const;
+
+private:
+	void SetMobileFPSMode(int32 NewLimitFPS);
+
+	void ClampMobileResolutionQuality(int32 TargetFPS);
+	void RemapMobileResolutionQuality(int32 FromFPS, int32 ToFPS);
+
+	void ClampMobileFPSQualityLevels(bool bWriteBack);
+	void ClampMobileQuality();
+	
+	int32 GetHighestLevelOfAnyScalabilityChannel() const;
+
+	/* Modifies the input levels based on the active mode's overrides */
+	void OverrideQualityLevelsToScalabilityMode(const FLyraScalabilitySnapshot& InMode, Scalability::FQualityLevels& InOutLevels);
+
+	/* Clamps the input levels based on the active device profile's default allowed levels */
+	void ClampQualityLevelsToDeviceProfile(const Scalability::FQualityLevels& ClampLevels, Scalability::FQualityLevels& InOutLevels);
+
+public:
+	int32 GetDesiredMobileFrameRateLimit() const { return DesiredMobileFrameRateLimit; }
+
+	void SetDesiredMobileFrameRateLimit(int32 NewLimitFPS);
+
+private:
+	UPROPERTY(Config)
+	int32 MobileFrameRateLimit = 30;
+
+	FLyraScalabilitySnapshot DeviceDefaultScalabilitySettings;
+
+	bool bSettingOverallQualityGuard = false;
+
+	int32 DesiredMobileFrameRateLimit = 0;
+	
 
 		//////////////////////////////////////////////////////////////////
 	// Audio - Volume
@@ -83,6 +156,7 @@ public:
 	/** Whether to use High Dynamic Range Audio mode (HDR Audio) **/
 	UPROPERTY(config)
 	bool bUseHDRAudioMode;
+
 
 public:
 	/** Returns true if this platform can run the auto benchmark */

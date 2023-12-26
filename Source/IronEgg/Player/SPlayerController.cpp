@@ -3,3 +3,13 @@
 
 #include "SPlayerController.h"
 
+ASPlayerController::ASPlayerController(const FObjectInitializer& ObjectInitializer):Super(ObjectInitializer)
+{
+}
+
+void ASPlayerController::OnRep_PlayerState()
+{
+	Super::OnRep_PlayerState();
+
+	
+}

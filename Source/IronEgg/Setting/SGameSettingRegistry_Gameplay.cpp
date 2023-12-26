@@ -1,4 +1,4 @@
-`#include "SGameSettingRegistry.h"
+#include "SGameSettingRegistry.h"
 #include "GameSetting.h"
 #include "GameSettingValueScalar.h"
 #include "GameSettingValueScalarDynamic.h"

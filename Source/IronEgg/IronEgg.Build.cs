@@ -11,11 +11,14 @@ public class IronEgg : ModuleRules
         PublicDependencyModuleNames.AddRange(new string[] {
             "Core", 
             "CoreUObject", 
+            "ApplicationCore",
             "Engine",
             "InputCore",
             "EnhancedInput",
             "ModularGameplayActors",
             "GameplayTags",
+            "GameplayTasks",
+            "GameplayAbilities",
             "UMG", 
             "Slate" 
         });

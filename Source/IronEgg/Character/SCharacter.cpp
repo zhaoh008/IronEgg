@@ -12,6 +12,9 @@
 #include "../Input/SEnhancedInputComponent.h"
 #include "../Input/SInputConfig.h"
 #include "../SLogChannels.h"
+#include "IronEgg/Player/SPlayerController.h"
+#include "IronEgg/Player/SPlayerState.h"
+#include "Kismet/GameplayStatics.h"
 
 
 ASCharacter::ASCharacter()
@@ -33,6 +36,13 @@ ASCharacter::ASCharacter()
 
 	PrimaryActorTick.bCanEverTick = true;
 	bReplicates = true;
+
+	WidgetComponent=CreateDefaultSubobject<UWidgetComponent>(TEXT("WidgetComp"));
+	WidgetComponent->SetupAttachment(RootComponent);
+	WidgetComponent->SetRelativeLocation(FVector(0,0,120));
+	WidgetComponent->SetWidgetSpace(EWidgetSpace::Screen);
+	WidgetComponent->SetDrawSize(FVector2d(580,120));
+	
 }
 
 
@@ -79,12 +89,24 @@ void ASCharacter::Input_LookStick(const FInputActionValue& InputActionValue)
 
 void ASCharacter::Input_Crouch(const FInputActionValue& InputActionValue)
 {
-
+	if (bIsCrouched || GetCharacterMovement()->bWantsToCrouch)
+	{
+		UnCrouch();
+	}
+	else if (GetCharacterMovement()->IsMovingOnGround())
+	{
+		Crouch();
+	}
 }
 
 void ASCharacter::Input_AutoRun(const FInputActionValue& InputActionValue)
 {
 
+}
+
+void ASCharacter::Input_Jump(const FInputActionValue& InputActionValue)
+{
+	Jump();
 }
 
 void ASCharacter::Tick(float DeltaTime)
@@ -115,8 +137,104 @@ void ASCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	const SGameplayTags& GameplayTags = SGameplayTags::Get();
 	EnhancedInputComponent->BindSAction(SInputConfig, GameplayTags.InputTag_Move, ETriggerEvent::Triggered, this, &ThisClass::Input_Move, true);
 	EnhancedInputComponent->BindSAction(SInputConfig, GameplayTags.InputTag_Look_Mouse, ETriggerEvent::Triggered, this, &ThisClass::Input_LookMouse, true);
+	EnhancedInputComponent->BindSAction(SInputConfig, GameplayTags.InputTag_Crouch, ETriggerEvent::Triggered, this, &ThisClass::Input_Crouch,true);
+}
 
+void ASCharacter::OnRep_PlayerState()
+{
+	Super::OnRep_PlayerState();
+	
+	ASPlayerState * PS= Cast<ASPlayerState> (GetPlayerState());
+	if(PS)
+	{
+		USAbilitySystemComponent * ASC=PS->GetSAbilitySystemComponent();
+		if (ASC)
+		{
+			AbilitySystemComponent=ASC;
+			ASC->InitAbilityActorInfo(PS,this);
+		}
 
+		USAttributeSet * Attributes=PS->GetSAttributeSet();
+		if (Attributes)
+		{
+			AttributeSetBase=Attributes;
+		}
+		InitializeAttributes();
+		OnPlayerStateClient_Implementation();
+		
+	}
+}
+
+//server only
+void ASCharacter::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+
+	ASPlayerState * PS= Cast<ASPlayerState> (GetPlayerState());
+	if(PS)
+	{
+		USAbilitySystemComponent * ASC=PS->GetSAbilitySystemComponent();
+		if (ASC)
+		{
+			AbilitySystemComponent=ASC;
+			ASC->InitAbilityActorInfo(PS,this);
+		}
+		USAttributeSet * Attributes=PS->GetSAttributeSet();
+		if (Attributes)
+		{
+			AttributeSetBase=Attributes;
+		}
+		InitializeAttributes();
+		OnPossesseServer_Implementation();
+	}
+	
+}
+
+USAbilitySystemComponent* ASCharacter::GetSAbilitySystemComponent() const
+{
+	return AbilitySystemComponent.Get();
+}
+
+void ASCharacter::AddCharacterAbilities()
+{
+}
+
+void ASCharacter::InitializeAttributes()
+{
+	if (!AbilitySystemComponent.IsValid())
+	{
+		return;
+	}
+
+	if (!DefaultAttributes)
+	{
+		UE_LOG(LogTemp, Error, TEXT("%s() Missing DefaultAttributes for %s. Please fill in the character's Blueprint."), *FString(__FUNCTION__), *GetName());
+		return;
+	}
+
+ 	 FGameplayEffectContextHandle EffectContextHandle= AbilitySystemComponent->MakeEffectContext();
+	EffectContextHandle.AddSourceObject(this);
+
+	 FGameplayEffectSpecHandle EffectSpecHandle= AbilitySystemComponent->MakeOutgoingSpec(DefaultAttributes,-1,EffectContextHandle);
+
+	if (EffectContextHandle.IsValid())
+	{
+		AbilitySystemComponent->ApplyGameplayEffectSpecToTarget(*EffectSpecHandle.Data.Get(),AbilitySystemComponent.Get());
+	}
+}
+
+void ASCharacter::AddStartupEffects()
+{
+}
+
+void ASCharacter::InitializeFloatingStatusBar()
+{
+	// Only create once
+	if (HealthWidget || !AbilitySystemComponent.IsValid())
+	{
+		return;
+	}
+	
 }
 
 

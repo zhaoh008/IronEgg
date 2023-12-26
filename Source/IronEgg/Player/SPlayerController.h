@@ -13,5 +13,8 @@ UCLASS()
 class IRONEGG_API ASPlayerController : public ACommonPlayerController
 {
 	GENERATED_BODY()
+public:
+	ASPlayerController(const FObjectInitializer& ObjectInitializer);
 
+	virtual void OnRep_PlayerState() override;
 };

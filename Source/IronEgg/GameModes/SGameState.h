@@ -6,6 +6,9 @@
 #include "ModularGameState.h"
 #include "SGameState.generated.h"
 
+class UFrontedStateComponent;
+
+
 /**
  *
  */
@@ -13,5 +16,16 @@ UCLASS()
 class IRONEGG_API ASGameState : public AModularGameState
 {
 	GENERATED_BODY()
+public:
+	ASGameState(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
+	
+	virtual  void BeginPlay() override;
+	
+protected:
 
+	UPROPERTY(VisibleAnywhere, Category = "GameState")
+	UFrontedStateComponent * FrontedStateComponent;
+
+
+	
 };
