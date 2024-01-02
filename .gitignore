@@ -75,3 +75,4 @@ DerivedDataCache/*
 /.idea
 /Plugins/GameFeatures/LeeErGou/Binaries
 /Plugins/GameFeatures/LeeErGou/Intermediate
+/Content/Script/.vscode
